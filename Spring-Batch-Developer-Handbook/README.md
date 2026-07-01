@@ -5,8 +5,8 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 ## Progress Tracker
 
 **Current Status**: In Progress
-**Current Chapter**: Chapter 15 - Spring Batch Observability
-**Next Documentation Page**: https://docs.spring.io/spring-batch/reference/spring-batch-observability.html
+**Current Chapter**: Chapter 16 - Appendix: List of ItemReaders and ItemWriters
+**Next Documentation Page**: https://docs.spring.io/spring-batch/reference/appendix.html
 
 - [Chapter 01 - Spring Batch Introduction](Chapter-01-Spring-Batch-Introduction.md)
 - [Chapter 02 - What’s new in Spring Batch 6.0](Chapter-02-Whats-new-in-Spring-Batch-6.md)
@@ -23,9 +23,9 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 - [Chapter 12 - Unit Testing](Chapter-12-Unit-Testing.md)
 - [Chapter 13 - Common Batch Patterns](Chapter-13-Common-Batch-Patterns.md)
 - [Chapter 14 - Spring Batch Integration](Chapter-14-Spring-Batch-Integration.md)
+- [Chapter 15 - Spring Batch Observability](Chapter-15-Spring-Batch-Observability.md)
 
 ### Remaining Chapters
-- Chapter 15 - Spring Batch Observability
 - Chapter 16 - Appendix: List of ItemReaders and ItemWriters
 - Chapter 17 - Appendix: Meta-Data Schema
 - Chapter 18 - Appendix: Glossary
@@ -48,7 +48,7 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 * [Chapter 12 - Unit Testing](Chapter-12-Unit-Testing.md) (Completed)
 * [Chapter 13 - Common Batch Patterns](Chapter-13-Common-Batch-Patterns.md) (Completed)
 * [Chapter 14 - Spring Batch Integration](Chapter-14-Spring-Batch-Integration.md) (Completed)
-* [Chapter 15 - Spring Batch Observability](Chapter-15-Spring-Batch-Observability.md) (Pending)
+* [Chapter 15 - Spring Batch Observability](Chapter-15-Spring-Batch-Observability.md) (Completed)
 * [Chapter 16 - Appendix: List of ItemReaders and ItemWriters](Chapter-16-Appendix-List-of-ItemReaders-and-ItemWriters.md) (Pending)
 * [Chapter 17 - Appendix: Meta-Data Schema](Chapter-17-Appendix-Meta-Data-Schema.md) (Pending)
 * [Chapter 18 - Appendix: Glossary](Chapter-18-Appendix-Glossary.md) (Pending)
