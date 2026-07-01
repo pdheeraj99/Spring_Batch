@@ -5,17 +5,17 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 ## Progress Tracker
 
 **Current Status**: In Progress
-**Current Chapter**: Chapter 04 - The Domain Language of Batch
-**Next Documentation Page**: https://docs.spring.io/spring-batch/reference/domain.html
+**Current Chapter**: Chapter 06 - Configuring a Step
+**Next Documentation Page**: https://docs.spring.io/spring-batch/reference/step.html
 
 ### Completed Chapters
 - [Chapter 01 - Spring Batch Introduction](Chapter-01-Spring-Batch-Introduction.md)
 - [Chapter 02 - What’s new in Spring Batch 6.0](Chapter-02-Whats-new-in-Spring-Batch-6.md)
 - [Chapter 03 - Spring Batch Architecture](Chapter-03-Spring-Batch-Architecture.md)
+- [Chapter 04 - The Domain Language of Batch](Chapter-04-The-Domain-Language-of-Batch.md)
+- [Chapter 05 - Configuring and Running a Job](Chapter-05-Configuring-and-Running-a-Job.md)
 
 ### Remaining Chapters
-- Chapter 04 - The Domain Language of Batch
-- Chapter 05 - Configuring and Running a Job
 - Chapter 06 - Configuring a Step
 - Chapter 07 - ItemReaders and ItemWriters
 - Chapter 08 - Item processing
@@ -36,8 +36,8 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 * [Chapter 01 - Spring Batch Introduction](Chapter-01-Spring-Batch-Introduction.md) (Completed)
 * [Chapter 02 - What’s new in Spring Batch 6.0](Chapter-02-Whats-new-in-Spring-Batch-6.md) (Completed)
 * [Chapter 03 - Spring Batch Architecture](Chapter-03-Spring-Batch-Architecture.md) (Completed)
-* [Chapter 04 - The Domain Language of Batch](Chapter-04-The-Domain-Language-of-Batch.md) (Pending)
-* [Chapter 05 - Configuring and Running a Job](Chapter-05-Configuring-and-Running-a-Job.md) (Pending)
+* [Chapter 04 - The Domain Language of Batch](Chapter-04-The-Domain-Language-of-Batch.md) (Completed)
+* [Chapter 05 - Configuring and Running a Job](Chapter-05-Configuring-and-Running-a-Job.md) (Completed)
 * [Chapter 06 - Configuring a Step](Chapter-06-Configuring-a-Step.md) (Pending)
 * [Chapter 07 - ItemReaders and ItemWriters](Chapter-07-ItemReaders-and-ItemWriters.md) (Pending)
 * [Chapter 08 - Item processing](Chapter-08-Item-processing.md) (Pending)
