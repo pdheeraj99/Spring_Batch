@@ -5,8 +5,8 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 ## Progress Tracker
 
 **Current Status**: In Progress
-**Current Chapter**: Chapter 06 - Configuring a Step
-**Next Documentation Page**: https://docs.spring.io/spring-batch/reference/step.html
+**Current Chapter**: Chapter 07 - ItemReaders and ItemWriters
+**Next Documentation Page**: https://docs.spring.io/spring-batch/reference/readersAndWriters.html
 
 ### Completed Chapters
 - [Chapter 01 - Spring Batch Introduction](Chapter-01-Spring-Batch-Introduction.md)
@@ -14,9 +14,9 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 - [Chapter 03 - Spring Batch Architecture](Chapter-03-Spring-Batch-Architecture.md)
 - [Chapter 04 - The Domain Language of Batch](Chapter-04-The-Domain-Language-of-Batch.md)
 - [Chapter 05 - Configuring and Running a Job](Chapter-05-Configuring-and-Running-a-Job.md)
+- [Chapter 06 - Configuring a Step](Chapter-06-Configuring-a-Step.md)
 
 ### Remaining Chapters
-- Chapter 06 - Configuring a Step
 - Chapter 07 - ItemReaders and ItemWriters
 - Chapter 08 - Item processing
 - Chapter 09 - Scaling and Parallel Processing
@@ -38,7 +38,7 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 * [Chapter 03 - Spring Batch Architecture](Chapter-03-Spring-Batch-Architecture.md) (Completed)
 * [Chapter 04 - The Domain Language of Batch](Chapter-04-The-Domain-Language-of-Batch.md) (Completed)
 * [Chapter 05 - Configuring and Running a Job](Chapter-05-Configuring-and-Running-a-Job.md) (Completed)
-* [Chapter 06 - Configuring a Step](Chapter-06-Configuring-a-Step.md) (Pending)
+* [Chapter 06 - Configuring a Step](Chapter-06-Configuring-a-Step.md) (Completed)
 * [Chapter 07 - ItemReaders and ItemWriters](Chapter-07-ItemReaders-and-ItemWriters.md) (Pending)
 * [Chapter 08 - Item processing](Chapter-08-Item-processing.md) (Pending)
 * [Chapter 09 - Scaling and Parallel Processing](Chapter-09-Scaling-and-Parallel-Processing.md) (Pending)
