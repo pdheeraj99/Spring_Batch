@@ -5,8 +5,8 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 ## Progress Tracker
 
 **Current Status**: In Progress
-**Current Chapter**: Chapter 07 - ItemReaders and ItemWriters
-**Next Documentation Page**: https://docs.spring.io/spring-batch/reference/readersAndWriters.html
+**Current Chapter**: Chapter 09 - Scaling and Parallel Processing
+**Next Documentation Page**: https://docs.spring.io/spring-batch/reference/scalability.html
 
 ### Completed Chapters
 - [Chapter 01 - Spring Batch Introduction](Chapter-01-Spring-Batch-Introduction.md)
@@ -15,10 +15,11 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 - [Chapter 04 - The Domain Language of Batch](Chapter-04-The-Domain-Language-of-Batch.md)
 - [Chapter 05 - Configuring and Running a Job](Chapter-05-Configuring-and-Running-a-Job.md)
 - [Chapter 06 - Configuring a Step](Chapter-06-Configuring-a-Step.md)
+- [Chapter 07 - ItemReaders and ItemWriters](Chapter-07-ItemReaders-and-ItemWriters.md)
+- [Chapter 07 - ItemReaders and ItemWriters (Part 2)](Chapter-07-ItemReaders-and-ItemWriters-Part-2.md)
+- [Chapter 08 - Item processing](Chapter-08-Item-processing.md)
 
 ### Remaining Chapters
-- Chapter 07 - ItemReaders and ItemWriters
-- Chapter 08 - Item processing
 - Chapter 09 - Scaling and Parallel Processing
 - Chapter 10 - Repeat
 - Chapter 11 - Retry
@@ -39,8 +40,9 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 * [Chapter 04 - The Domain Language of Batch](Chapter-04-The-Domain-Language-of-Batch.md) (Completed)
 * [Chapter 05 - Configuring and Running a Job](Chapter-05-Configuring-and-Running-a-Job.md) (Completed)
 * [Chapter 06 - Configuring a Step](Chapter-06-Configuring-a-Step.md) (Completed)
-* [Chapter 07 - ItemReaders and ItemWriters](Chapter-07-ItemReaders-and-ItemWriters.md) (Pending)
-* [Chapter 08 - Item processing](Chapter-08-Item-processing.md) (Pending)
+* [Chapter 07 - ItemReaders and ItemWriters](Chapter-07-ItemReaders-and-ItemWriters.md) (Completed)
+* [Chapter 07 - ItemReaders and ItemWriters (Part 2)](Chapter-07-ItemReaders-and-ItemWriters-Part-2.md) (Completed)
+* [Chapter 08 - Item processing](Chapter-08-Item-processing.md) (Completed)
 * [Chapter 09 - Scaling and Parallel Processing](Chapter-09-Scaling-and-Parallel-Processing.md) (Pending)
 * [Chapter 10 - Repeat](Chapter-10-Repeat.md) (Pending)
 * [Chapter 11 - Retry](Chapter-11-Retry.md) (Pending)

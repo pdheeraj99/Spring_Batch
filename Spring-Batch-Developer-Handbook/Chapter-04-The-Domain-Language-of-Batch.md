@@ -1,117 +1,131 @@
 # Chapter 04 - The Domain Language of Batch
 
 ## Introduction
-Prathi experienced batch architect ki Spring Batch lo unde overall concepts (Job, Step, ItemReader, ItemWriter) munde parichayam unnavi gaane untayi. Kaani, Spring patterns, templates, callbacks, inka idiomatic Java upayoginchadam valla, Spring Batch lo separation of concerns chaala clear ga untundi. Ee chapter lo manam Spring Batch yokka domain language (Core Entities) gurinchi in-depth ga nerchukuntamu. Ee stereotypes meeda pattunte, framework ni artham cheskovadam chala easy.
+Prathi experienced batch architect ki Spring Batch lo unde overall concepts (Job, Step, ItemReader, ItemWriter) munde parichayam unnavi gaane untayi. Kaani, Spring patterns, templates, callbacks, inka idiomatic Java upayoginchadam valla, Spring Batch lo separation of concerns chaala clear ga untundi. Ee chapter lo manam Spring Batch yokka domain language (Core Entities) gurinchi in-depth ga nerchukuntamu.
 
 ## Domain Concept Stereotypes Diagram
 
 ```mermaid
 graph TD
-    J[JobLauncher] -->|runs| J2[Job]
-    J2 -->|has 1 to N| S[Step]
+    JL[JobLauncher] -->|runs| J[Job]
+    J -->|has 1 to N| S[Step]
     S -->|has 1| IR[ItemReader]
     S -->|has 0 or 1| IP[ItemProcessor]
     S -->|has 1| IW[ItemWriter]
 
-    J[JobLauncher] -->|uses| JR[JobRepository]
-    J2 -->|uses| JR
+    JL -->|uses| JR[JobRepository]
+    J -->|uses| JR
     S -->|uses| JR
 ```
 
-Paina unna diagram lo mukhya maina batch stereotypes unnayi. Oka `Job` lo okati leda antha kante ekkuva `Step`s untayi. Prathi `Step` lo `ItemReader`, optional ga `ItemProcessor`, inka `ItemWriter` untayi. `Job` ni launch cheyadaniki `JobLauncher` (leda `JobOperator`) vadataru, mariyu execution metadata antha `JobRepository` lo store inka restore avtundi.
-
 ---
 
-## The `Job` Entity
+## 1. Job
 
-Oka `Job` anedi poorthi batch process ni encapsulate chese oka container. Idi just oka blueprint (leda definition). Deenilo ee kindi details untayi:
-- Job yokka peru (name)
-- Etuvanti `Step`s unnayi inka vaati execution order enti
-- Ee job restartable aa kaada?
+Oka `Job` anedi poorthi batch process ni encapsulate chese oka container. Idi just oka blueprint (leda definition). Deenilo Job peru, Steps order, inka restartability details untayi.
 
-Java configuration lo, Spring Batch `SimpleJob` ane default implementation istundi, kani manam vaadedi `JobBuilder`.
+### Behind the Scenes: Job
+*   **Package Name:** `org.springframework.batch.core.Job`
+*   **Default Implementation:** `org.springframework.batch.core.job.SimpleJob`
+*   **Important Methods:** `execute(JobExecution execution)`, `getName()`, `isRestartable()`
+*   **Who calls it internally:** `org.springframework.batch.core.launch.support.SimpleJobLauncher`
+*   **What it calls next:** `SimpleStepHandler.handleStep()` (to execute individual steps)
+*   **Lifecycle:** JobLauncher nunchi call vachinappudu `execute()` invoke avtundi. Job start ayyemundu `JobExecution` status `STARTED` ga marthundi. Lopalunna steps anni complete ayyaka `COMPLETED` leda `FAILED` ga marthundi.
 
-### Code Example: Job Configuration
-```java
-@Bean
-public Job footballJob(JobRepository jobRepository) {
-    return new JobBuilder("footballJob", jobRepository)
-                     .start(playerLoad())
-                     .next(gameLoad())
-                     .next(playerSummarization())
-                     .build();
-}
+```mermaid
+sequenceDiagram
+    participant JobLauncher
+    participant SimpleJob
+    participant SimpleStepHandler
+    participant Step
+
+    JobLauncher->>SimpleJob: execute(JobExecution)
+    Note right of SimpleJob: Status set to STARTED
+    loop For each Step
+        SimpleJob->>SimpleStepHandler: handleStep(Step, JobExecution)
+        SimpleStepHandler->>Step: execute(StepExecution)
+    end
+    Note right of SimpleJob: Status set to COMPLETED/FAILED
 ```
 
 ---
 
-## `JobInstance`
-`JobInstance` anedi oka logical job run ni represent chestundi. `Job` anedi blueprint aithe, `JobInstance` anedi aa blueprint tho eeroju run chese pani.
-*Example:* Oka 'EndOfDay' `Job` roju ratri run avvali. Jan 1st roju run ayye job 'Jan 1st JobInstance'. Oka vela Jan 1st run fail ayyi, malli next day re-run chesina... adi kotha `JobInstance` kaadu, same 'Jan 1st JobInstance' ee.
+## 2. JobInstance & JobParameters
+`JobInstance` anedi oka logical job run ni represent chestundi. `Job` anedi blueprint aithe, `JobInstance` anedi aa blueprint tho eeroju run chese pani. Ee `JobInstance` inkoka daaniki theda theliyalante `JobParameters` vadatharu.
 
-**Important:** Oka specific time lo oke `JobInstance` (identified by JobParameters) run avvalagadu.
-
----
-
-## `JobParameters`
-Oka `JobInstance` inkoka `JobInstance` ki madyalo theda etla thelustundi? Answer: `JobParameters`.
-`JobParameters` anedi oka batch job ni start cheyadaniki vaade parameters set.
+*   **Package Name:** `org.springframework.batch.core.JobInstance`, `org.springframework.batch.core.JobParameters`
 
 ```
 JobInstance = Job + Identifying JobParameters
 ```
-*Behind the scenes:* Me data load logic lo elanti data load avvalo (e.g. effective date based) ee `JobParameters` dwara pass chestaru.
 
 ---
 
-## `JobExecution`
-`JobExecution` anedi oka `Job` ni run cheyadaniki chese single attempt (technical concept). Oka `JobInstance` complete ayyela cheyadaniki multiple `JobExecution`s jaragavachu.
-*Example:* Jan 1st `JobInstance` fail aithe adi oka `JobExecution` (Failed status). Malli same Jan 1st parameters tho restart cheste inkoka kotha `JobExecution` create avtundi, kani `JobInstance` maatram okkate.
+## 3. JobExecution
+`JobExecution` anedi oka `Job` ni run cheyadaniki chese single attempt (technical concept). Oka `JobInstance` complete ayyela cheyadaniki multiple `JobExecution`s jaragavachu (due to failures and restarts).
 
 ### API Insights: `JobExecution` Properties
-`JobExecution` object lo chala mukhyamaina properties untayi:
-- `status` (`BatchStatus`): STARTED, FAILED, COMPLETED.
-- `startTime`, `endTime`, `createTime`, `lastUpdated` (`LocalDateTime`).
-- `exitStatus` (`ExitStatus`): Caller ki return iche exit code.
-- `executionContext` (`ExecutionContext`): Ee execution nunchi inko execution ki datani save cheskovadaniki property bag.
-
-*Behind the scenes:* Metadata tables like `BATCH_JOB_EXECUTION` lo ee data antha save avtundi, deeni vallane Spring Batch ki fail ayina deggara nunchi "restart" chese capability vasthundi.
+*   **Package Name:** `org.springframework.batch.core.JobExecution`
+*   `status` (`BatchStatus`): STARTED, FAILED, COMPLETED.
+*   `startTime`, `endTime`, `createTime`, `lastUpdated` (`LocalDateTime`).
+*   `exitStatus` (`ExitStatus`): Caller ki return iche exit code.
+*   `executionContext` (`ExecutionContext`): State maintain cheyadaniki.
 
 ---
 
-## `Step`
-`Step` anedi job lo oka independent, sequential phase. Prathi `Job` konni `Step`s tho form avtundi. Oka `Step` chala simple (just reading and writing) leda chala complex (complex business rules applying) undochu.
+## 4. Step
 
-## `StepExecution`
-`JobExecution` laagaane, `StepExecution` anedi oka `Step` ni run cheyadaniki chese attempt. `JobExecution` start aithene `StepExecution` create avtundi. Mundu step fail aithe, tharwata step ki execution create avvadu.
+`Step` anedi job lo oka independent, sequential phase. Idi simple script execution kavachu leda complex chunk-based data processing kavachu.
 
-### API Insights: `StepExecution` Properties
-- `readCount`, `writeCount`: Enni records read/write ayyayo chepthayi.
-- `commitCount`, `rollbackCount`: Transactional statistics.
-- `readSkipCount`, `writeSkipCount`, `processSkipCount`: Skip logic dwara ignore chesina records count.
-- `filterCount`: `ItemProcessor` lo null return chesi filter aina records count.
+### Behind the Scenes: Step
+*   **Package Name:** `org.springframework.batch.core.Step`
+*   **Default Implementation:** `org.springframework.batch.core.step.tasklet.TaskletStep`
+*   **Important Methods:** `execute(StepExecution stepExecution)`
+*   **Who calls it internally:** `SimpleStepHandler` (from `SimpleJob`)
+*   **What it calls next:** `Tasklet.execute()` (or specifically `ChunkOrientedTasklet.execute()`)
+*   **Lifecycle:** Step start avagane kotha `StepExecution` create avtundi. Transaction boundary lona chunk processing leda tasklet logic jargutundi. Success aithe `COMPLETED`, leda `FAILED` ga mark avtundi.
+
+```mermaid
+sequenceDiagram
+    participant SimpleStepHandler
+    participant TaskletStep
+    participant TransactionManager
+    participant Tasklet
+
+    SimpleStepHandler->>TaskletStep: execute(StepExecution)
+    TaskletStep->>TransactionManager: begin transaction
+    TaskletStep->>Tasklet: execute()
+    Tasklet-->>TaskletStep: RepeatStatus.FINISHED
+    TaskletStep->>TransactionManager: commit
+```
 
 ---
 
-## `ExecutionContext`
-`ExecutionContext` anedi framework dvara control cheyabade key/value pairs collection (similar to Quartz `JobDataMap`). Deeni main purpose: Job fail ayina tarvata restart chesetappudu "state" ni save cheyadam.
+## 5. ExecutionContext
 
-*How it works internally:* Flat file processing lanti scenarios lo, prathi commit time lo, framework `ExecutionContext` ni database lo save chestundi. E.g., 40,000 lines tarvata fail aithe, a `lineCount` variable context lo untundi. Restart chesinapudu, `ItemReader` aa count ni teeskuni 40,001 line nunchi start avtundi.
+`ExecutionContext` anedi framework dvara control cheyabade key/value pairs collection. Deeni main purpose: Job fail ayina tarvata restart chesetappudu "state" ni save cheyadam.
 
-**Best Practice / Warning:**
-- Oka Job ki oka `ExecutionContext`, inka prathi Step ki daani sontha `ExecutionContext` untundi (`ecStep != ecJob`).
-- Ee context lo pedthunna objects anni thappakunda `Serializable` ayyi undali. Leda restart time lo deserialize avvaka fail avtundi.
+### Behind the Scenes: ExecutionContext
+*   **Package Name:** `org.springframework.batch.item.ExecutionContext`
+*   **Default Implementation:** Backed by a `ConcurrentHashMap<String, Object>`
+*   **Important Methods:** `put(String key, Object value)`, `getInt()`, `getString()`
+*   **Who calls it internally:** `ItemStream` implement chese components (e.g. `FlatFileItemReader`)
+*   **What it calls next:** Framework calls `JobRepository.updateExecutionContext()` to persist to DB.
+*   **Lifecycle:** Step level context ayithe prathi commit interval ki save avtundi. Job level context ayithe step nunchi step madhyalo save avtundi. Objects anni thappakunda `Serializable` ayyi undali.
 
 ---
 
-## JobRepository & JobOperator
-- **JobRepository:** Idivaraku cheppina `Job`, `Step`, `Executions` annitini save chese persistence mechanism. Idhi database lo `BATCH_` tables dwara CRUD operations chestundi.
-- **JobOperator:** Jobs ni start, stop, leda restart cheyadaniki use ayye simple interface. Custom dashboards leda REST controllers nunchi job ni control cheyali ante deenni vadutaru.
+## 6. JobRepository
 
-## The Trio: ItemReader, ItemProcessor, ItemWriter
-- **ItemReader:** Oka time lo okko item ni input nunchi (file, DB, queue) chadavadaniki (Retrieval of input). Anni items aipoyaka `null` return chestundi.
-- **ItemProcessor:** Business logic / Transformation apply cheyadaniki. Item ni invalid ani reject cheyali anukunte, ikkadanunchi `null` return chestaru (adi write avvadu).
-- **ItemWriter:** Oka time lo oka chunk/batch (List of items) ni destination loki (DB, file) write chestundi. Deeniki previous leda next items tho sambandam undadu.
+`JobRepository` anedi metadata antha save chese persistence layer.
+
+### Behind the Scenes: JobRepository
+*   **Package Name:** `org.springframework.batch.core.repository.JobRepository`
+*   **Default Implementation:** `org.springframework.batch.core.repository.support.SimpleJobRepository`
+*   **Important Methods:** `createJobExecution()`, `update()`, `updateExecutionContext()`
+*   **Who calls it internally:** `JobLauncher`, `Job`, `Step`
+*   **What it calls next:** Internal `Dao` classes (`JobInstanceDao`, `JobExecutionDao`, `StepExecutionDao`) which execute SQL against the database.
+*   **Lifecycle:** Application start nunchi end varaku idi eppudu actively transactions vadi metadata (started, updated, completed states) ni BATCH_* tables lo persist chesthune untundi.
 
 ---
 
@@ -121,10 +135,8 @@ JobInstance = Job + Identifying JobParameters
    - `JobInstance` anedi logical job run (Job + Parameters), kani `JobExecution` anedi actual attempt. Oka fail ayina `JobInstance` ki multiple `JobExecution`s undochu, kani successful `JobInstance` complete ayyindi anede final.
 2. **ExecutionContext asalu em chestundi?**
    - Idi oka key-value store, framework idhi prathi commit ki DB lo save chestundi. Fail aina execution ni malla start (restart) cheyadaniki state maintain cheyadaniki idi chala avasaram.
-3. **ItemProcessor lo nunchi `null` return cheste em avtundi?**
-   - Aa item filter ayipothundi, adhi `ItemWriter` ki velladu. Deenni filtering pattern antaru, inka idi `StepExecution` yokka `filterCount` lo add avtundi.
-4. **Oka Job ni same JobParameters tho roju run cheyyocha?**
+3. **Oka Job ni same JobParameters tho roju run cheyyocha?**
    - Ledu. Oka `JobInstance` already COMPLETED state lo unte, same JobParameters tho malli run cheyaleru (`JobInstanceAlreadyCompleteException` vastundi). Roju run cheyali ante timestamp lanti param ni add chesi new instance thecchukovali.
 
 ## Summary
-Ee chapter lo Spring Batch domain language lo prathi technical concept (Job, Step, Reader, Processor, Writer, Execution, Context) venuka unna reasoning mariyu database representations gurinchi clearly nerchukuntamu. Ee stereotypes meeda deep understanding thone framework chala parmatmaga avuthundi.
+Ee chapter lo Spring Batch domain language loni major components (`Job`, `Step`, `ExecutionContext`, `JobRepository`) yokka internal implementations, package names, inka call sequences gurinchi clear ga nerchukunnnamu. Ee internal knowledge debugging time lo chala help avtundi.
