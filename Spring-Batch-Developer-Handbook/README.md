@@ -5,8 +5,8 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 ## Progress Tracker
 
 **Current Status**: In Progress
-**Current Chapter**: Chapter 09 - Scaling and Parallel Processing
-**Next Documentation Page**: https://docs.spring.io/spring-batch/reference/scalability.html
+**Current Chapter**: Chapter 11 - Retry
+**Next Documentation Page**: https://docs.spring.io/spring-batch/reference/retry.html
 
 ### Completed Chapters
 - [Chapter 01 - Spring Batch Introduction](Chapter-01-Spring-Batch-Introduction.md)
@@ -18,10 +18,10 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 - [Chapter 07 - ItemReaders and ItemWriters](Chapter-07-ItemReaders-and-ItemWriters.md)
 - [Chapter 07 - ItemReaders and ItemWriters (Part 2)](Chapter-07-ItemReaders-and-ItemWriters-Part-2.md)
 - [Chapter 08 - Item processing](Chapter-08-Item-processing.md)
+- [Chapter 09 - Scaling and Parallel Processing](Chapter-09-Scaling-and-Parallel-Processing.md)
+- [Chapter 10 - Repeat](Chapter-10-Repeat.md)
 
 ### Remaining Chapters
-- Chapter 09 - Scaling and Parallel Processing
-- Chapter 10 - Repeat
 - Chapter 11 - Retry
 - Chapter 12 - Unit Testing
 - Chapter 13 - Common Batch Patterns
@@ -43,8 +43,8 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 * [Chapter 07 - ItemReaders and ItemWriters](Chapter-07-ItemReaders-and-ItemWriters.md) (Completed)
 * [Chapter 07 - ItemReaders and ItemWriters (Part 2)](Chapter-07-ItemReaders-and-ItemWriters-Part-2.md) (Completed)
 * [Chapter 08 - Item processing](Chapter-08-Item-processing.md) (Completed)
-* [Chapter 09 - Scaling and Parallel Processing](Chapter-09-Scaling-and-Parallel-Processing.md) (Pending)
-* [Chapter 10 - Repeat](Chapter-10-Repeat.md) (Pending)
+* [Chapter 09 - Scaling and Parallel Processing](Chapter-09-Scaling-and-Parallel-Processing.md) (Completed)
+* [Chapter 10 - Repeat](Chapter-10-Repeat.md) (Completed)
 * [Chapter 11 - Retry](Chapter-11-Retry.md) (Pending)
 * [Chapter 12 - Unit Testing](Chapter-12-Unit-Testing.md) (Pending)
 * [Chapter 13 - Common Batch Patterns](Chapter-13-Common-Batch-Patterns.md) (Pending)
