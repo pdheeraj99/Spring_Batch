@@ -29,6 +29,10 @@ Idi batch processing loni main task or oka unit of work. Idi business logic ni i
 ### Tasklet
 Oka `Step` loni business logic ni process cheyadaniki developer create chese oka component ne `Tasklet` antaru.
 
+
+### Batch Job Type
+Job types define the typical usage of a batch processing pattern. Common categories include Interface Processing (like parsing and dumping flat files), Forms Processing (like generating massive PDF statements), and Report Processing (aggregating huge data sets for BI reporting).
+
 ### Item
 Process cheyadaniki panikoche ati chinna (smallest) complete data entity. Idi oka file loni row kavochu, database table loni record kavochu, leda XML loni oka element kavochu.
 

@@ -47,6 +47,16 @@ sequenceDiagram
 
 ---
 
+
+## 2.5 ItemProcessor
+`ItemReader` chadivindi, `ItemWriter` rastundi. Ee madhyalo data ni transform cheyadaniki leda filter cheyadaniki vadutaru `ItemProcessor`.
+
+### Behind the Scenes: ItemProcessor
+*   **Package Name:** `org.springframework.batch.item.ItemProcessor`
+*   **Important Methods:** `O process(I item) throws Exception`
+*   **Who calls it internally:** `ChunkProcessor.process()`
+*   **Lifecycle:** Oka item processor ki vochinapudu, adhi data ni transform chesi isthundi. Oka vela aa item validation lo fail aithe leda filter cheyali anukunte, processor nunchi `null` return cheyali. Appudu `ItemWriter` ki aa item velladhu.
+
 ## 3. ItemStream
 Reader leda writer file ni leda database connection ni open cheyyali inka close cheyyali. Alage restart kosam state ni save cheyali. Deenikosame `ItemStream` interface vachindi.
 

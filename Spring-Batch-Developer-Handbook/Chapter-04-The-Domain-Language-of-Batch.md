@@ -129,6 +129,23 @@ sequenceDiagram
 
 ---
 
+
+## 7. JobOperator
+`JobOperator` anedi job lifecycle ni control chese (start, stop, restart, abandon) ok simple interface.
+
+### Behind the Scenes: JobOperator
+*   **Package Name:** `org.springframework.batch.core.launch.JobOperator`
+*   **Default Implementation:** `org.springframework.batch.core.launch.support.SimpleJobOperator`
+*   **Important Methods:** `start()`, `stop()`, `restart()`, `abandon()`
+*   **Who calls it internally:** External clients like REST controllers or JMX beans or Schedulers call this to interact with batch jobs gracefully.
+
+## 8. ItemReader, ItemProcessor, and ItemWriter
+*   **ItemReader**: Reads data one item at a time. Returns `null` when exhausted.
+*   **ItemProcessor**: Transforms data. Returns `null` to filter an item.
+*   **ItemWriter**: Takes a chunk (List) of items and writes them sequentially or in batch.
+
+*(These are discussed deeply in later chapters).*
+
 ## Interview Questions
 
 1. **JobInstance mariyu JobExecution ki madhya theda enti?**

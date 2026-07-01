@@ -78,6 +78,22 @@ var reader = new FlatFileItemReaderBuilder()
  .build();
 ```
 
+
+## 8. New Command Line Operator
+Mundhu nunchi Spring Batch lo `CommandLineJobRunner` undedhi. Kani adhi Spring Boot tho integrate cheyadaniki chala ibbandi ga undedi (e.g. static initialisation, non-standard options handling). Spring Batch 6 lo `CommandLineJobOperator` ni introduce chesaru. Idi extendable, customizable and Spring Boot tho easily reusable.
+
+## 9. Ability to Recover Failed Job Executions
+Mundhu oka job abruptly fail aite, database lo SQL statements (update status) manual ga run chesthe gaani adhi recover ayyedhi kadhu. Ippudu `JobOperator` interface lo `recover` ane kotha method ni introduce chesaru. Idi anni repositories (JDBC, Mongo) lo consistently failed jobs ni recover chestundi.
+
+## 10. Ability to stop all kinds of steps
+V5.2 varaku `JobOperator#stop` dwara kevalam `Tasklet` steps ni matrame aapagaligem. Ippudu `StoppableStep` ane kotha interface introduce chesaru. Deni dwara eh custom step aina stop signals ni handle cheyagaladu.
+
+## Behind the Scenes: ChunkOrientedStep
+- **Version Notes**: Since Spring Batch 6.0 (Stable).
+- **Default Implementation**: `ChunkOrientedStep` replaces older `TaskletStep` and `ChunkOrientedTasklet` combinations.
+- **Internal Execution Flow**: Data reading and processing happens in a decoupled producer-consumer queue pattern to avoid blocking the writing phase.
+
+
 ## Other Notable Features
 - **Null Safety:** APIs ki `JSpecify` annotations add chesaru for better code quality.
 - **Local Chunking:** JVM lopalane multiple threads vaadi local ga chunk items ni parallel ga process cheyadaniki support vachindi.

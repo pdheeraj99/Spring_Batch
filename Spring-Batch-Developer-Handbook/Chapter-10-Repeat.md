@@ -66,6 +66,10 @@ Idi just oka attribute bag (Map lanti di). Iteration start ayyinappudu create ay
 
 ---
 
+
+## Nested Repeats
+Sometimes a repeat process needs to be nested inside another. Spring Batch supports this. The inner repeat creates its own `RepeatContext`, but it has a parent pointer to the outer repeat's context. This allows inner loops to share state or counters with the outer loop if necessary.
+
 ## 4. Completion Policies
 Loop eppudu aagalo decide chesedi `CompletionPolicy`. Idi `RepeatTemplate` lopaliki inject chestaru.
 

@@ -60,6 +60,11 @@ Spring Batch yokka main technical objectives:
 * **Extensibility:** Spring framework vaadi services ni configure, customize inka extend chesukovadam chala easy ga undali.
 * **Simple deployment:** Architecture JARs ni application nunchi separate ga Maven dwara build chese deployment model.
 
+
+## Behind the Scenes: Framework Origins and Objectives
+- **Origin**: Spring Batch originated from a collaboration between SpringSource (now VMware) and Accenture. Accenture contributed their proprietary batch processing architecture frameworks based on decades of experience (COBOL on mainframes, C++ on Unix, and Java).
+- **Core Philosophy**: Let developers focus on business logic while the framework takes care of the complex infrastructure (like transactions, restarting, and resource management).
+
 ## Best Practices
 - Spring Batch ni scheduler laaga vaadakandi. Daaniki badulu external schedulers like Quartz leda cron jobs ni vadi Spring Batch jobs ni trigger cheyandi.
 - Business logic ni infrastructre nunchi separate ga maintain cheyandi.

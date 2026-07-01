@@ -39,6 +39,21 @@ public void afterJob(JobExecution jobExecution) {
 }
 ```
 
+
+## JobParametersValidator
+Oka job start ayye mundu compulsory parameters unnayo ledo ani assert cheyadaniki `JobParametersValidator` vadutaru. Default ga Spring Batch `DefaultJobParametersValidator` ni isthundi, deenitho simple mandatory and optional fields combinations set cheyochu.
+```java
+@Bean
+public Job job1(JobRepository jobRepository) {
+    return new JobBuilder("job1", jobRepository)
+        .validator(new DefaultJobParametersValidator(
+            new String[]{"date"}, // required
+            new String[]{"run.id"} // optional
+        ))
+        .build();
+}
+```
+
 ## 3. Configuring a JobRepository
 JobRepository is the heart of Spring Batch persistence. Restartability kavali ante, DB backed job repository vundali.
 - JDBC kosam: `@EnableJdbcJobRepository`

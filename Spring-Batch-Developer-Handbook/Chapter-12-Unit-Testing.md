@@ -12,7 +12,7 @@ Prathi enterprise application ki testing anedi entha mukhyamo batch jobs ki kuda
 Batch job ni test cheyali ante, thappakunda Job's `ApplicationContext` ni load cheyali. Deeni kosam Spring Batch rendu annotations ni istundi.
 
 - `@SpringJUnitConfig`: Idi Spring context ni initialize chestundi.
-- `@SpringBatchTest`: Idi Spring Batch test utilities ayina `JobOperatorTestUtils` mariyu `JobRepositoryTestUtils` ni test context loki inject chestundi.
+- `@SpringBatchTest`: Idi Spring Batch test utilities ayina `JobLauncherTestUtils` mariyu `JobRepositoryTestUtils` ni test context loki inject chestundi.
 
 ```java
 @SpringBatchTest
@@ -28,8 +28,8 @@ public class SkipSampleFunctionalTests {
 
 End-to-End testing ante, oka job start avvadaniki mundu data prepare chesi, job ni start chesi, last ki output data expect chesinattu vachinda leda ani test cheyadam.
 
-### Behind the Scenes: `JobOperatorTestUtils`
-*   **Package Name:** `org.springframework.batch.test.JobOperatorTestUtils`
+### Behind the Scenes: `JobLauncherTestUtils`
+*   **Package Name:** `org.springframework.batch.test.JobLauncherTestUtils`
 *   **Important Methods:** `startJob()`, `startJob(JobParameters)`, `startStep(String stepName)`
 *   **Who calls it internally:** Mee JUnit `@Test` method call chestundi.
 *   **What it calls next:** `JobLauncher.run()` ni internal ga call chesi Job ni trigger chestundi.
@@ -38,15 +38,15 @@ End-to-End testing ante, oka job start avvadaniki mundu data prepare chesi, job 
 ```mermaid
 sequenceDiagram
     participant JUnit Test
-    participant JobOperatorTestUtils
+    participant JobLauncherTestUtils
     participant JobLauncher
     participant JobRepository
 
-    JUnit Test->>JobOperatorTestUtils: startJob()
-    JobOperatorTestUtils->>JobLauncher: run(Job, JobParameters)
+    JUnit Test->>JobLauncherTestUtils: startJob()
+    JobLauncherTestUtils->>JobLauncher: run(Job, JobParameters)
     JobLauncher->>JobRepository: create execution
-    JobLauncher-->>JobOperatorTestUtils: JobExecution
-    JobOperatorTestUtils-->>JUnit Test: JobExecution
+    JobLauncher-->>JobLauncherTestUtils: JobExecution
+    JobLauncherTestUtils-->>JUnit Test: JobExecution
     Note over JUnit Test: Assert jobExecution.getExitStatus() == COMPLETED
 ```
 
@@ -57,7 +57,7 @@ sequenceDiagram
 public class SkipSampleFunctionalTests {
 
     @Autowired
-    private JobOperatorTestUtils jobOperatorTestUtils;
+    private JobLauncherTestUtils jobLauncherTestUtils;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -65,12 +65,12 @@ public class SkipSampleFunctionalTests {
     @Test
     public void testJob(@Autowired Job job) throws Exception {
         // 1. Setup Test Data
-        this.jobOperatorTestUtils.setJob(job);
+        this.jobLauncherTestUtils.setJob(job);
         this.jdbcTemplate.update("delete from CUSTOMER");
         this.jdbcTemplate.update("insert into CUSTOMER values (1, 'customer1')");
 
         // 2. Execute Job
-        JobExecution jobExecution = jobOperatorTestUtils.startJob();
+        JobExecution jobExecution = jobLauncherTestUtils.startJob();
 
         // 3. Verify Result
         Assert.assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
@@ -80,13 +80,17 @@ public class SkipSampleFunctionalTests {
 
 ---
 
+
+## Important Note on JobLauncherTestUtils
+`JobLauncherTestUtils` is the utility class provided by Spring Batch to easily test jobs and steps end-to-end. It differs from `JobOperator` in that it is specifically designed for integration testing environments and automatically resolves the `Job` bean from the test context if there is only one.
+
 ## 3. Testing Individual Steps
 
 Pedda jobs unte, motham job ni every time end-to-end test cheyadam kante, specific "Step" ni test cheyadam best.
 
 ```java
 // Testing only one step instead of the entire job
-JobExecution jobExecution = jobOperatorTestUtils.startStep("loadFileStep");
+JobExecution jobExecution = jobLauncherTestUtils.startStep("loadFileStep");
 Assert.assertEquals("COMPLETED", jobExecution.getExitStatus().getExitCode());
 ```
 
@@ -154,9 +158,9 @@ assertEquals(ExitStatus.FAILED.getExitCode(), exitStatus.getExitCode());
 
 ## Interview Questions
 1. **Spring Batch jobs ni unit test chestunapudu `@SpringBatchTest` enduku vadatharu?**
-   - Idi test context loki Spring Batch utilities like `JobOperatorTestUtils` inka `StepScopeTestExecutionListener` lanti vatini inject chestundi. Deeni valla jobs ni leda step-scoped components ni test cheyadam easy avtundi.
+   - Idi test context loki Spring Batch utilities like `JobLauncherTestUtils` inka `StepScopeTestExecutionListener` lanti vatini inject chestundi. Deeni valla jobs ni leda step-scoped components ni test cheyadam easy avtundi.
 2. **`@StepScope` unna reader/writer ni ela test chestaru?**
    - Direct ga test cheste `ScopeNotActiveException` vastundi. Daaniki dummy `StepExecution` theeskuni `StepScopeTestUtils.doInStepScope()` lona run cheyali leda test class paina `@SpringBatchTest` petti `getStepExecution()` method dwara fake context ni pass cheyali.
 
 ## Summary
-Ee chapter lo Spring Batch tests rasetapudu unde complex requirements gurinchi (like mocking contexts, step level execution, end to end validation) chusamu. `JobOperatorTestUtils` and `MetaDataInstanceFactory` lanti tools developer productivity ni chala perugutayi. Next chapter lo manam Common Batch Patterns gurinchi thelusukundam.
+Ee chapter lo Spring Batch tests rasetapudu unde complex requirements gurinchi (like mocking contexts, step level execution, end to end validation) chusamu. `JobLauncherTestUtils` and `MetaDataInstanceFactory` lanti tools developer productivity ni chala perugutayi. Next chapter lo manam Common Batch Patterns gurinchi thelusukundam.

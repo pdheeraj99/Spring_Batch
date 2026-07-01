@@ -81,6 +81,12 @@ Enterprise batch processing eppudu offline lone kadu, online transactions jargut
 ## Minimizing Deadlocks
 Parallel processing or partitioning chesetapudu database deadlocks vache chance ekuva. DBA support tho table indexes inka architecture tables ni optimize cheyali. Deadlock vaste ventane fail avvakunda, koncham sepu aagi malli retry chese (wait-and-retry) logic ni implement cheyali.
 
+
+## Behind the Scenes: Infrastructure and Parallelism
+- **Component Interplay**: Application layer code references the Core layer (like `Job` and `Step`). Both Application and Core rely heavily on the Infrastructure layer (readers, writers, templates).
+- **Physical vs Logical Partitioning**: Database partitioning strategy must align with application partitioning. Using a central "Partition Repository" (Partition Table) with High and Low key values is a production best practice for managing data bounds dynamically at startup.
+- **Handling Contention**: Locking services or wait-and-retry logic should be implemented natively in the architecture to prevent full job aborts due to temporary database locks.
+
 ## Interview Questions
 1. **Spring Batch Layered Architecture lo emem untayi?**
    - Application Layer (Job definitions/Custom code), Core Layer (Job, Step, JobOperator), Infrastructure Layer (ItemReader, ItemWriter, RetryTemplate).

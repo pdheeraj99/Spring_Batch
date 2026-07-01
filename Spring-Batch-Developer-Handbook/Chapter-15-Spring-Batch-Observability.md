@@ -110,6 +110,11 @@ public ObservationRegistry observationRegistry(MeterRegistry meterRegistry, Trac
 
 ---
 
+
+## Observability Infrastructure Behind the Scenes
+- **Tracing Aware Observation Handler**: When `TracingAwareMeterObservationHandler` is configured, Spring Batch ensures that the `Observation` created for the Job and Step automatically ties into the injected `Tracer`. This means any logging framework (like Logback/SLF4J) configured to pick up MDC (Mapped Diagnostic Context) will automatically log `traceId` and `spanId` alongside standard batch logs.
+- **Auto-configuration**: If you are using Spring Boot, `spring-boot-starter-actuator` automatically sets up the `ObservationRegistry` for you. You don't necessarily have to create the `@Bean` manually unless you are running a vanilla Spring Framework application.
+
 ## 2. Java Flight Recorder (JFR) Support
 
 ### What is JFR?

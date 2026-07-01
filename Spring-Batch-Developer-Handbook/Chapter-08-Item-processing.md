@@ -102,6 +102,10 @@ public BeanValidatingItemProcessor<Person> beanValidatingItemProcessor() {
 
 ---
 
+
+## Fault Tolerance in Item Processors
+When dealing with `ItemProcessor` in a fault-tolerant step (where retry or skip logic is enabled), remember that an item might be passed to the `ItemProcessor` multiple times if a rollback occurs. Therefore, it is critical that your processor code does not have side-effects that corrupt the item's state. The architecture passes the original item read by the `ItemReader` during retries.
+
 ## 5. Fault Tolerance & Idempotency
 
 Oka step "fault-tolerant" (skip leda retry configure chesunte) ga unnapudu, konni sarlu transaction rollback ayyi malli same item processing ki ravachu.

@@ -4,7 +4,7 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 
 ## Progress Tracker
 
-**Current Status**: In Progress
+**Current Status**: Finished
 **Current Chapter**: Complete
 - [Chapter 01 - Spring Batch Introduction](Chapter-01-Spring-Batch-Introduction.md)
 - [Chapter 02 - What’s new in Spring Batch 6.0](Chapter-02-Whats-new-in-Spring-Batch-6.md)

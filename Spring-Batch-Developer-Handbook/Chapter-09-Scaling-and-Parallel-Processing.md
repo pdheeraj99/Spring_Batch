@@ -29,6 +29,10 @@ ChunkOrientedTasklet#execute()
 
 ---
 
+
+## Important Note on Thread-Safety
+When utilizing Multi-threaded Steps, you must either wrap your stateful components (like readers/writers) in thread-safe wrappers (e.g. `SynchronizedItemStreamReader`) or explicitly set `saveState=false` on components that don't support concurrent execution to avoid corrupted state in the database during restarts.
+
 ## 2. Parallel Steps (Single Process)
 
 Oka job lo konni steps madhya dependencies emi lekapothe (e.g. loading customers inka loading products), vaatini parallel ga run cheyochu.

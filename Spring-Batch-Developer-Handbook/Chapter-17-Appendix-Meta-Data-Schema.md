@@ -6,6 +6,14 @@ Spring Batch okka framework ga restart, retry, stat tracking lantivi provide che
 ## Why this feature exists
 Batch processing lo job failures sangathe thelisindhe. "Ekkuva data unnappudu madhyalo fail aite, ekkada aagipoindo thelusukuni akkadinunche malli ela start avvali?" ane prashnaki samadhanam ee metadata tables. Ivi Job and Step state ni persist chesthayi.
 
+
+## DDL Scripts and Migrations
+Spring Batch `core` JAR file lo standard DDL scripts untayi. Ivi `/org/springframework/batch/core/schema-*.sql` location lo dorukutayi.
+Adhe vidhanga, paatha versions nunchi kotha versions ki upgrade ayyetappudu avasaramaina schema modifications kosam `migration` folder lo version specific scripts kooda istharu.
+
+## Multi-byte Character Support
+Chinese leda Telugu Unicode lanti multi-byte characters ni `JobRepository` lo store cheyali ante, table schema lo `VARCHAR` length ni double cheyali leda `NVARCHAR` vadali. Spring Batch `JobRepository` properties lo `max-varchar-length` ni half ki set cheste data truncation lekunda chusukuntundi.
+
 ---
 
 ## 1. Overview of Meta-Data Tables

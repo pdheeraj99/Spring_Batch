@@ -6,6 +6,12 @@ Spring Batch lo `ItemReader` and `ItemWriter` interfaces chala central role play
 ## Why this feature exists
 Prathi developer flat file reading, database paging, xml parsing lanti common problems ki malli malli code raayakunda undadaniki Spring Batch velle robust ga test chesina standard implementations ni provide chestundi. Idi telusukovadam valla development time chala varaku save avthundi.
 
+
+### Note on Modern File Formats
+With the rise of modern data formats, Spring Batch provides extensive support for JSON and Avro out of the box.
+- `JsonItemReader` parses a JSON array of objects using either Jackson or Gson.
+- `AvroItemReader` and `AvroItemWriter` serialize and deserialize data efficiently using the Apache Avro framework, providing compact binary formats.
+
 ---
 
 ## 1. Item Readers

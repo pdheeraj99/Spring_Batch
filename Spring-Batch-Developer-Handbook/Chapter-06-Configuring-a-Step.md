@@ -82,6 +82,13 @@ public Step deleteFilesStep(JobRepository jobRepository, PlatformTransactionMana
 }
 ```
 
+
+## Inheriting from a Parent Step
+Java config lo builders use chestunnapudu prathi sari oke options (listeners, skip limit, etc.) rasedani badulu, okesari master (parent) definition create chesukuni, daanni multiple steps (child steps) ki apply cheyochu.
+```java
+// Idi Spring Batch v5+ lo builder inheritance antaru, XML lo unna abstract parent step ki similar idi.
+```
+
 ## 3. Intercepting Step Execution (Listeners)
 Step execution lo various phases lo (e.g. chunk start ayye mundu, file read ayyina taruvatha) log cheyyadaniki leda custom logic execute cheyadaniki `StepListener` vadatharu.
 Mukhya maina listeners:

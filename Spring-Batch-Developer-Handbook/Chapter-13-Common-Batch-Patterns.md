@@ -124,5 +124,14 @@ public void retrieveData(StepExecution stepExecution) {
 }
 ```
 
+
+## Interview Questions
+1. **How do you stop a Spring Batch Job conditionally from within a Step?**
+   - By obtaining the `StepExecution` inside a listener or custom component and invoking `stepExecution.setTerminateOnly()`. This instructs the framework to throw a `JobInterruptedException` gracefully at the next check.
+2. **What is the Driving Query Pattern and when is it useful?**
+   - When retrieving full object graphs directly via the `ItemReader` is too heavy on memory or causes aggressive DB locks, the Driving Query pattern is used. The `ItemReader` only queries for the primary keys (IDs). Then, the `ItemProcessor` acts as a lookup service to query the full object graph for that specific ID.
+3. **How do you share data between two different steps in the same Job?**
+   - By using the `JobExecution`'s `ExecutionContext`. To do this safely, write data to the `StepExecution`'s context during the step, and then use the `ExecutionContextPromotionListener` to automatically promote those specific keys to the Job context once the step completes successfully.
+
 ## Summary
 Ee chapter lo real-world enterprise batch jobs lo vache chinna chinna samasyalaku (like passing data between steps, terminating explicitly, handling empty inputs, maintaining stateful footer callbacks) elanti established patterns Spring Batch isthundo nerchukunnnamu. Next chapter lo `Spring Batch Integration` gurinchi thelusukundam.

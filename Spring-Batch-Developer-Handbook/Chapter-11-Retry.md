@@ -59,6 +59,11 @@ public Step step1(JobRepository jobRepository, PlatformTransactionManager transa
 }
 ```
 
+
+## Stateful vs Stateless Retry
+- **Stateless Retry:** Typically used for external web service calls where there is no transactional boundary tied to the caller. The retry loop stays inside the current method call and just blocks until retries are exhausted.
+- **Stateful Retry:** Used when transactional resources are involved. If a database insert fails and rolls back the transaction, a simple `while` loop won't work because the transaction is dead. The framework must bubble up the exception, rollback, and re-present the original item to the step in a brand-new transaction. Spring Batch manages this state inherently when chunk-oriented processing is used.
+
 ### Best Practices
 - **Idempotency:** Retry logic vadetappudu `ItemProcessor` and `ItemWriter` idempotent ga undali. Endukante transaction fail ayyi rollback ayyaka malli same data ni process chestunnam.
 - **Don't Retry Everything:** File parsing lanti deterministic errors (e.g. `FlatFileParseException`) ki retry panikiradu. Aa record same file lo enni sarlu chadhivina format thappugane untundi. Alanti vatiki **Skip** vadali. Retry is strictly for transient/intermittent failures.

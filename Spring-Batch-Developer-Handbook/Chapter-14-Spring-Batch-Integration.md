@@ -43,6 +43,13 @@ public class FileMessageToJobRequest {
 }
 ```
 
+
+## The JobExecution Response
+JobLaunchingGateway job ni execute cheyagane `JobExecution` instance return avtundi.
+Kani ikkada catch enti ante, `TaskExecutor` behaviour meeda idi depend ayyi untundi.
+- Single-threaded (Sync) `TaskExecutor` vadithe, job completely finish ayye daka gateway block ayyi, last ki response isthundi.
+- Asynchronous `TaskExecutor` vadithe, `JobExecution` ventane (job inka run avthundagane) return aipothundi. Appudu manam `JobExplorer` vadi status poll cheskovali.
+
 ### Configuration Using JobLaunchingGateway
 Java configuration dwara gateway ni define cheyadam:
 
