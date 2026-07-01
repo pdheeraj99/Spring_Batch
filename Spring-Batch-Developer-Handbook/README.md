@@ -1,29 +1,54 @@
-# Spring Batch Developer Handbook (Telugu Version)
+# Spring Batch Developer Handbook
 
-Welcome to the ultimate Spring Batch Developer Handbook written for developers from beginner to enterprise level! This handbook is written in Telugu (using English letters) and explains not just *how* Spring Batch works, but *why* it exists, its internal mechanisms, best practices, and real-world production cases.
-
-## Table of Contents
-
-- [Chapter 01: Introduction](Chapter-01-Introduction.md)
-- [Chapter 02: Architecture](Chapter-02-Spring-Batch-Architecture.md)
-- [Chapter 03: The Domain Language of Batch](Chapter-03-Domain-Language.md)
-
-*(More chapters will be added as we progress through the documentation)*
+This repository contains a comprehensive guide to Spring Batch, written in Telugu (using English letters) tailored for Enterprise Java Developers.
 
 ## Progress Tracker
 
-This section tracks the progress against the official Spring Batch documentation to ensure seamless continuation.
+**Current Status**: In Progress
+**Current Chapter**: Chapter 04 - The Domain Language of Batch
+**Next Documentation Page**: https://docs.spring.io/spring-batch/reference/domain.html
 
-- **Current Status:** Starting Configuring and Running a Job
-- **Completed Pages:** 4
-- **Overall Completion:** ~8%
+### Completed Chapters
+- [Chapter 01 - Spring Batch Introduction](Chapter-01-Spring-Batch-Introduction.md)
+- [Chapter 02 - What’s new in Spring Batch 6.0](Chapter-02-Whats-new-in-Spring-Batch-6.md)
+- [Chapter 03 - Spring Batch Architecture](Chapter-03-Spring-Batch-Architecture.md)
 
-### To-Do List (Documentation Pages)
-- [x] `index.html` (Overview)
-- [x] `spring-batch-intro.html` (Spring Batch Introduction)
-- [x] `spring-batch-architecture.html` (Spring Batch Architecture)
-- [ ] `whatsnew.html` (What's new in Spring Batch 6)
-- [x] `domain.html` (The Domain Language of Batch)
-- [ ] *... and the rest of the documentation.*
+### Remaining Chapters
+- Chapter 04 - The Domain Language of Batch
+- Chapter 05 - Configuring and Running a Job
+- Chapter 06 - Configuring a Step
+- Chapter 07 - ItemReaders and ItemWriters
+- Chapter 08 - Item processing
+- Chapter 09 - Scaling and Parallel Processing
+- Chapter 10 - Repeat
+- Chapter 11 - Retry
+- Chapter 12 - Unit Testing
+- Chapter 13 - Common Batch Patterns
+- Chapter 14 - Spring Batch Integration
+- Chapter 15 - Spring Batch Observability
+- Chapter 16 - Appendix: List of ItemReaders and ItemWriters
+- Chapter 17 - Appendix: Meta-Data Schema
+- Chapter 18 - Appendix: Glossary
+- Chapter 19 - Appendix: Frequently Asked Questions
 
-*(This README is a living document and will be updated after each chapter is finalized).*
+## Table of Contents
+
+* [Chapter 01 - Spring Batch Introduction](Chapter-01-Spring-Batch-Introduction.md) (Completed)
+* [Chapter 02 - What’s new in Spring Batch 6.0](Chapter-02-Whats-new-in-Spring-Batch-6.md) (Completed)
+* [Chapter 03 - Spring Batch Architecture](Chapter-03-Spring-Batch-Architecture.md) (Completed)
+* [Chapter 04 - The Domain Language of Batch](Chapter-04-The-Domain-Language-of-Batch.md) (Pending)
+* [Chapter 05 - Configuring and Running a Job](Chapter-05-Configuring-and-Running-a-Job.md) (Pending)
+* [Chapter 06 - Configuring a Step](Chapter-06-Configuring-a-Step.md) (Pending)
+* [Chapter 07 - ItemReaders and ItemWriters](Chapter-07-ItemReaders-and-ItemWriters.md) (Pending)
+* [Chapter 08 - Item processing](Chapter-08-Item-processing.md) (Pending)
+* [Chapter 09 - Scaling and Parallel Processing](Chapter-09-Scaling-and-Parallel-Processing.md) (Pending)
+* [Chapter 10 - Repeat](Chapter-10-Repeat.md) (Pending)
+* [Chapter 11 - Retry](Chapter-11-Retry.md) (Pending)
+* [Chapter 12 - Unit Testing](Chapter-12-Unit-Testing.md) (Pending)
+* [Chapter 13 - Common Batch Patterns](Chapter-13-Common-Batch-Patterns.md) (Pending)
+* [Chapter 14 - Spring Batch Integration](Chapter-14-Spring-Batch-Integration.md) (Pending)
+* [Chapter 15 - Spring Batch Observability](Chapter-15-Spring-Batch-Observability.md) (Pending)
+* [Chapter 16 - Appendix: List of ItemReaders and ItemWriters](Chapter-16-Appendix-List-of-ItemReaders-and-ItemWriters.md) (Pending)
+* [Chapter 17 - Appendix: Meta-Data Schema](Chapter-17-Appendix-Meta-Data-Schema.md) (Pending)
+* [Chapter 18 - Appendix: Glossary](Chapter-18-Appendix-Glossary.md) (Pending)
+* [Chapter 19 - Appendix: Frequently Asked Questions](Chapter-19-Appendix-Frequently-Asked-Questions.md) (Pending)
