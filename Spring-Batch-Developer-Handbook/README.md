@@ -5,10 +5,9 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 ## Progress Tracker
 
 **Current Status**: In Progress
-**Current Chapter**: Chapter 13 - Common Batch Patterns
-**Next Documentation Page**: https://docs.spring.io/spring-batch/reference/common-patterns.html
+**Current Chapter**: Chapter 15 - Spring Batch Observability
+**Next Documentation Page**: https://docs.spring.io/spring-batch/reference/spring-batch-observability.html
 
-### Completed Chapters
 - [Chapter 01 - Spring Batch Introduction](Chapter-01-Spring-Batch-Introduction.md)
 - [Chapter 02 - What’s new in Spring Batch 6.0](Chapter-02-Whats-new-in-Spring-Batch-6.md)
 - [Chapter 03 - Spring Batch Architecture](Chapter-03-Spring-Batch-Architecture.md)
@@ -22,10 +21,10 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 - [Chapter 10 - Repeat](Chapter-10-Repeat.md)
 - [Chapter 11 - Retry](Chapter-11-Retry.md)
 - [Chapter 12 - Unit Testing](Chapter-12-Unit-Testing.md)
+- [Chapter 13 - Common Batch Patterns](Chapter-13-Common-Batch-Patterns.md)
+- [Chapter 14 - Spring Batch Integration](Chapter-14-Spring-Batch-Integration.md)
 
 ### Remaining Chapters
-- Chapter 13 - Common Batch Patterns
-- Chapter 14 - Spring Batch Integration
 - Chapter 15 - Spring Batch Observability
 - Chapter 16 - Appendix: List of ItemReaders and ItemWriters
 - Chapter 17 - Appendix: Meta-Data Schema
@@ -47,8 +46,8 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 * [Chapter 10 - Repeat](Chapter-10-Repeat.md) (Completed)
 * [Chapter 11 - Retry](Chapter-11-Retry.md) (Completed)
 * [Chapter 12 - Unit Testing](Chapter-12-Unit-Testing.md) (Completed)
-* [Chapter 13 - Common Batch Patterns](Chapter-13-Common-Batch-Patterns.md) (Pending)
-* [Chapter 14 - Spring Batch Integration](Chapter-14-Spring-Batch-Integration.md) (Pending)
+* [Chapter 13 - Common Batch Patterns](Chapter-13-Common-Batch-Patterns.md) (Completed)
+* [Chapter 14 - Spring Batch Integration](Chapter-14-Spring-Batch-Integration.md) (Completed)
 * [Chapter 15 - Spring Batch Observability](Chapter-15-Spring-Batch-Observability.md) (Pending)
 * [Chapter 16 - Appendix: List of ItemReaders and ItemWriters](Chapter-16-Appendix-List-of-ItemReaders-and-ItemWriters.md) (Pending)
 * [Chapter 17 - Appendix: Meta-Data Schema](Chapter-17-Appendix-Meta-Data-Schema.md) (Pending)
