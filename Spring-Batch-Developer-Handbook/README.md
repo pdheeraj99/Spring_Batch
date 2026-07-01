@@ -5,8 +5,8 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 ## Progress Tracker
 
 **Current Status**: In Progress
-**Current Chapter**: Chapter 11 - Retry
-**Next Documentation Page**: https://docs.spring.io/spring-batch/reference/retry.html
+**Current Chapter**: Chapter 13 - Common Batch Patterns
+**Next Documentation Page**: https://docs.spring.io/spring-batch/reference/common-patterns.html
 
 ### Completed Chapters
 - [Chapter 01 - Spring Batch Introduction](Chapter-01-Spring-Batch-Introduction.md)
@@ -20,10 +20,10 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 - [Chapter 08 - Item processing](Chapter-08-Item-processing.md)
 - [Chapter 09 - Scaling and Parallel Processing](Chapter-09-Scaling-and-Parallel-Processing.md)
 - [Chapter 10 - Repeat](Chapter-10-Repeat.md)
+- [Chapter 11 - Retry](Chapter-11-Retry.md)
+- [Chapter 12 - Unit Testing](Chapter-12-Unit-Testing.md)
 
 ### Remaining Chapters
-- Chapter 11 - Retry
-- Chapter 12 - Unit Testing
 - Chapter 13 - Common Batch Patterns
 - Chapter 14 - Spring Batch Integration
 - Chapter 15 - Spring Batch Observability
@@ -45,8 +45,8 @@ This repository contains a comprehensive guide to Spring Batch, written in Telug
 * [Chapter 08 - Item processing](Chapter-08-Item-processing.md) (Completed)
 * [Chapter 09 - Scaling and Parallel Processing](Chapter-09-Scaling-and-Parallel-Processing.md) (Completed)
 * [Chapter 10 - Repeat](Chapter-10-Repeat.md) (Completed)
-* [Chapter 11 - Retry](Chapter-11-Retry.md) (Pending)
-* [Chapter 12 - Unit Testing](Chapter-12-Unit-Testing.md) (Pending)
+* [Chapter 11 - Retry](Chapter-11-Retry.md) (Completed)
+* [Chapter 12 - Unit Testing](Chapter-12-Unit-Testing.md) (Completed)
 * [Chapter 13 - Common Batch Patterns](Chapter-13-Common-Batch-Patterns.md) (Pending)
 * [Chapter 14 - Spring Batch Integration](Chapter-14-Spring-Batch-Integration.md) (Pending)
 * [Chapter 15 - Spring Batch Observability](Chapter-15-Spring-Batch-Observability.md) (Pending)
