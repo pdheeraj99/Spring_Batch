@@ -97,3 +97,8 @@ Parallel processing or partitioning chesetapudu database deadlocks vache chance 
 
 ## Summary
 Spring Batch Layered Architecture (Application, Core, Infrastructure) anedi clear separation of concerns ni isthundi. Manchi batch application rayalante I/O minimize cheyadam, in-memory operations vadadam, inka locking meeda pattu undadam chala avasaram. Partitioning inka parallel processing techniques vaadi performance ni maximize chesukovachu.
+## 4. Layered Architecture Deep Dive
+Spring Batch architecture 3 layers ga untundi:
+- **Application**: Developers rase code inka job configurations.
+- **Core**: Job, Step, JobLauncher lanti classes. Ivi batch domain ni represent chesthayi.
+- **Infrastructure**: ItemReaders, ItemWriters, mariyu JobRepository. Ivi actual ga data tho interact ayye components.

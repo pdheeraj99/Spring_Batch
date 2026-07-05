@@ -137,3 +137,9 @@ MVC controller or REST API nunchi start chesthunte `JobOperator` autowire chesku
 
 ## Summary
 Ee chapter lo job configuration inka execution venuka unna mechanisms nerchukunnnamu. `JobLauncher` inka `JobOperator` elaa DB tho interact ayyi `SimpleJob` ni theskostundho sequence diagrams lo chusamu. Next chapter lo `Step` configuration gurinchi telusukundam.
+
+
+## 6. JobBuilder and JobRepository Details\nJava configuration lo  vadinappudu  pass cheyadam thappakunda cheyyali. Ikkada builder lo unde , ,  lanti operators flow control kosam upayogapaduthayi.\n
+
+## 6. JobBuilder and Flow Control
+Java configuration lo `JobBuilder` vadinappudu `JobRepository` thappakunda undali. Ikkada builder lo unde `start`, `next`, `split` lanti operators declarative flow control kosam upayogapaduthayi. Alage external flows ni `FlowBuilder` tho kooda integrate cheyachu.

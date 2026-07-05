@@ -106,3 +106,6 @@ Spring batch indexing isvadu, kani mana load base cheskoni maname index cheskova
 
 2. **Spring Batch lo okavele Job fail ayyi malli start cheste table entires ela untayi?**
    **Ans:** Patha `BATCH_JOB_INSTANCE` ke kottha `BATCH_JOB_EXECUTION` (with new sequence id) and dani kinda kotha `BATCH_STEP_EXECUTION` records insert avthayi. ExecutionContext mathram pathadhe read cheskoni resume avthundi.
+
+## Schema Upgrade Notes
+Spring Batch versions update ayinappudu, e.g., 4 to 5 or 5 to 6, metadata schema lo konni columns size leda sequence names marutuntayi. Ee scripts `org/springframework/batch/core/schema-*.sql` kindha framework jar lo dhorukuthayi.

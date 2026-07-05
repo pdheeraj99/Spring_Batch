@@ -1,128 +1,57 @@
 # Chapter 10 - Repeat
 
 ## Introduction
-Batch processing mottam repetitive actions paine aadharapadi untundi. Oka input file nunchi records chadavadam, process cheyyadam, inka rayadam - idi oka pedda while-loop laanti logic. Spring Batch ee repetition ni strategize cheyadaniki, general-purpose ga vadadaniki `RepeatOperations` ane oka iterator framework ni thecchindi. Ee chapter lo `RepeatTemplate`, completion policies, inka exception handling gurinchi chusthamu.
+Batch processing lo oka task ni multiple times execute cheyalsina avasaram vasthundi. Chunk processing lona idi internal ga jaruguthundi, kani Spring Batch deenni oka general abstraction laaga `RepeatOperations` interface dwara provide chestundi. Ee chapter lo `Repeat` ela panichestundi inka completion policies enti ani deep ga nerchukuntamu.
 
----
+## 1. RepeatOperations and RepeatTemplate
+Oka pani ni malli malli cheyadaniki Spring Batch lo vaade interface `RepeatOperations`. Deeniki mukhya maina method `iterate`. Deeni default implementation `RepeatTemplate`.
 
-## 1. RepeatOperations & RepeatTemplate
-
-Java loni standard `Iterator` leda `while` loop ki badulu, Spring Batch `RepeatOperations` ni vaduthundi.
-
-### Behind the Scenes: RepeatTemplate
-*   **Package Name:** `org.springframework.batch.repeat.support.RepeatTemplate`
-*   **Important Methods:** `iterate(RepeatCallback callback)`
-*   **Who calls it internally:** `ChunkOrientedTasklet` (via `ChunkProvider` and `ChunkProcessor`)
-*   **What it calls next:** `RepeatCallback.doInIteration()` (Mee business logic or reading/writing logic).
-*   **Lifecycle:** Idi callback loni code ni repeat chestune untundi, eppativarakante `CompletionPolicy` finish ani cheppe varaku, leda exception oche varaku.
-
-```mermaid
-sequenceDiagram
-    participant Caller (e.g. Tasklet)
-    participant RepeatTemplate
-    participant RepeatCallback
-    participant CompletionPolicy
-
-    Caller->>RepeatTemplate: iterate(RepeatCallback)
-    loop until finished
-        RepeatTemplate->>RepeatCallback: doInIteration(RepeatContext)
-        RepeatCallback-->>RepeatTemplate: RepeatStatus (CONTINUABLE / FINISHED)
-        RepeatTemplate->>CompletionPolicy: isComplete(RepeatContext, RepeatStatus)?
-        CompletionPolicy-->>RepeatTemplate: true/false
-    end
-    RepeatTemplate-->>Caller: RepeatStatus.FINISHED
+### API Insight
+```java
+public interface RepeatOperations {
+    RepeatStatus iterate(RepeatCallback callback) throws RepeatException;
+}
 ```
 
-**Code Example:**
+- **RepeatCallback**: Ikkade mana actual logic untundi. Idi `RepeatStatus` return chestundi (`CONTINUABLE` leda `FINISHED`). `CONTINUABLE` isthe malli execute avuthundi, `FINISHED` isthe aagipothundi.
+
+**Behind the Scenes: RepeatTemplate**
+- **Package Name:** `org.springframework.batch.repeat.support.RepeatTemplate`
+- `RepeatTemplate` oka while loop laaga panachestundi. Prathi iteration taruvatha `CompletionPolicy` ni adigi aagipovala leda continue avvala ani decide avuthundi.
+
 ```java
 RepeatTemplate template = new RepeatTemplate();
-template.setCompletionPolicy(new SimpleCompletionPolicy(2)); // Runs only 2 times
+template.setCompletionPolicy(new SimpleCompletionPolicy(2));
 
 template.iterate(new RepeatCallback() {
     public RepeatStatus doInIteration(RepeatContext context) {
-        System.out.println("Processing chunk...");
+        // Do stuff in batch...
+        System.out.println("Executing repeating logic...");
         return RepeatStatus.CONTINUABLE;
     }
 });
 ```
 
----
+## 2. Completion Policies
+Loop eppudu aagali ani decide chesedi `CompletionPolicy`.
 
-## 2. RepeatStatus
+1. **SimpleCompletionPolicy**: Oka fixed number of times run ayyaka aagipothundi (e.g. `commit-interval` kosam idi vadatharu).
+2. **TimeoutTerminationPolicy**: Certain amount of time (timeout) daatina taruvatha aagipothundi. Idi long-running jobs eppudu stop avvalo decide cheyyadaniki upayogapadutundi.
+3. Manam custom completion policy kuda rayochu (e.g., specific batch window daatithe stop chesela).
 
-`RepeatCallback` nunchi oche return value ni `RepeatStatus` antaru. Idi oka Enum.
-*   **`CONTINUABLE`**: Inka work baki undi, loop ni continue cheyi.
-*   **`FINISHED`**: Work aipoindi, leda nenu inka stop cheseddam anukuntunna, iteration aapeyi.
+## 3. Exception Handling (ExceptionHandler)
+`RepeatCallback` lo exception vaste em jaragali anedi `ExceptionHandler` chusukuntundi.
+- `SimpleLimitExceptionHandler`: Konni exceptions ni ignore chesi, oka limit dataka re-throw chestundi. Idi `RepeatTemplate` lo configure cheyyochu.
 
-*API Insight:* Rendu status lanu `and()` method vaadi kalapavacchu. Ekkadaina okka `FINISHED` vachina, final result `FINISHED` aipothundi.
+## 4. Listeners
+Repeat loop life cycle lo hooks add cheyadaniki `RepeatListener` vadatharu.
+- `open`, `before`, `after`, `onError`, `close` methods untayi. Prathi iteration mundu/tarvatha logs veyyadaniki leda monitoring kosam vadachu.
 
----
+## 5. Parallel Processing (TaskExecutorRepeatTemplate)
+Standard `RepeatTemplate` oke thread (Synchronous) lo iterations run chestundi. Kani okosari manam parallel ga run cheyali anukunte `TaskExecutorRepeatTemplate` vadi, oka Spring `TaskExecutor` isthe, multiple threads lo loop execute avuthundi.
 
-## 3. RepeatContext
-Idi just oka attribute bag (Map lanti di). Iteration start ayyinappudu create ayyi, end ayyaka destroy aipothundi.
-
-- **Usage:** Iteration loop madhyalo variables ni gurtu pettukovadaniki (e.g. enni sarlu error vachindi ani count cheyadaniki).
-- **Parent Context:** Okavela nested repeats unte (e.g. Chunk lopalinki chunk), parent context nunchi state theచ్చుకోవచ్చు.
-
----
-
-
-## Nested Repeats
-Sometimes a repeat process needs to be nested inside another. Spring Batch supports this. The inner repeat creates its own `RepeatContext`, but it has a parent pointer to the outer repeat's context. This allows inner loops to share state or counters with the outer loop if necessary.
-
-## 4. Completion Policies
-Loop eppudu aagalo decide chesedi `CompletionPolicy`. Idi `RepeatTemplate` lopaliki inject chestaru.
-
-*   **Package Name:** `org.springframework.batch.repeat.CompletionPolicy`
-*   **Common Implementations:**
-    *   `SimpleCompletionPolicy`: Specific number of times (e.g., commit-interval) run chesi aputhundi.
-    *   `TimeoutTerminationPolicy`: Specific time (e.g., 5 seconds) datinatharuvaatha aputhundi.
-
-*Enterprise Note:* Meeru custom policy kuda rayochu. Example ki, "Online users login ayye time (morning 8 AM) datithe batch processing loop ni ventane aapeyi" ani rayochu.
-
----
-
-## 5. Exception Handling
-Loop madhyalo exception vasthe, loop break aipovala leda continue avvala ani decide chesedhi `ExceptionHandler`.
-
-*   **Package Name:** `org.springframework.batch.repeat.exception.ExceptionHandler`
-*   **Common Implementations:**
-    *   `SimpleLimitExceptionHandler`: Oka particular exception vasthu unte (e.g. DB Lock exception), n sarlu varaku ignore chestundi. Limit daatithe re-throw chesi loop fail chestundi.
-
----
-
-## 6. RepeatListeners
-Oka `StepListener` laage, repeat iterations madhyalo extra hooks kavalante `RepeatListener` vadatharu.
-Idi `open()`, `before()`, `after()`, `onError()`, inka `close()` callbacks isthundi.
-
----
-
-## 7. Declarative Iteration
-Konni sarlu framework lekunda, manam rase normal Spring Service lo method repetitively call avvali (e.g. Queue nunchi message continuously pull cheyadaniki) anukunte, Spring AOP vaadi `@Bean` level lo `RepeatOperationsInterceptor` configure cheyochu.
-
-```java
-@Bean
-public MyService myService() {
-    ProxyFactory factory = new ProxyFactory(RepeatOperations.class.getClassLoader());
-    factory.setInterfaces(MyService.class);
-    factory.setTarget(new MyService());
-
-    // Wraps processMessage in a RepeatTemplate loop!
-    RepeatOperationsInterceptor interceptor = new RepeatOperationsInterceptor();
-    ((Advised) factory.getProxy()).addAdvisor(new DefaultPointcutAdvisor(..., interceptor));
-    return (MyService) factory.getProxy();
-}
-```
-
----
-
-## Interview Questions
-1. **Spring Batch enduku normal `while` loop vadakunda `RepeatTemplate` vadtundi?**
-   - Normal `while` loop hardcoded untundi. `RepeatTemplate` vadadam valla "eppudu aagali" anedi (CompletionPolicy), "exception oste em cheyali" anedi (ExceptionHandler), inka hooks (Listeners) ni decoupled ga bayatnunchi inject cheyochu. Idi chala flexible.
-2. **`RepeatStatus.CONTINUABLE` inka `RepeatStatus.FINISHED` madhya theda enti?**
-   - `CONTINUABLE` ante inka data leda pani undi, malli `doInIteration()` call cheyamani framework ki signal. `FINISHED` ante work aipoindi, loop break chesey mani signal.
-3. **`SimpleCompletionPolicy` Spring Batch lo ekkada internal ga vadatharu?**
-   - Chunk-oriented processing lo `commit-interval` define chestham kada, aa interval daataka chunk end cheyyadaniki internal ga `SimpleCompletionPolicy` e vadatharu.
+## 6. Declarative Iteration (AOP)
+Oka normal Spring service method ni intercept chesi, dani paina retry leda repeat logic ni apply cheyadaniki Spring Batch `RepeatOperationsInterceptor` ni isthundi. Idi AOP (Aspect Oriented Programming) vaadi intercept chestundi.
 
 ## Summary
-Ee chapter lo Spring Batch yokka core looping mechanism ayina `RepeatTemplate`, daani callbacks (`RepeatStatus`), policies, mariyu exceptions ela handle chesthundho internals chusamu. Idi framework mothaniki under-the-hood engine laaga pani chestundi. Next chapter lo manam `Retry` framework gurinchi chusthamu.
+`RepeatOperations` anedi Spring Batch lona internal chunk loop ki gunde kaaya lantidi. `RepeatTemplate` mariyu `CompletionPolicy` kalisi `ItemReader` ni eppatidaka pilavali ani decide chesthayi.

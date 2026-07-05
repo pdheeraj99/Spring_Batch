@@ -92,3 +92,6 @@ Spring Batch anedi optimization inka partitioning techniques dwara extremely hig
 
 ## Summary
 Ee chapter lo manam Spring Batch yokka introduction, adi solve chese problems, business scenarios, inka technical objectives chusamu. SpringSource inka Accenture kalisi ee framework ni enterprise systems lo standard reusable batch architecture ga tayaru chesaru. Mundu mundu chapters lo architecture inka domain language gurinchi deep ga nerchukuntamu.
+
+## 5. Official Spring Batch Principles
+Spring Batch official ga chala principles define chestundi: Robustness, Reliability, inka Scalability. Ee framework core business logic nunchi batch infrastructure ni separate chestundi, so developers business paina focus pettachu.

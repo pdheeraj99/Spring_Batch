@@ -82,3 +82,6 @@ ItemWriters data ni final target ki push cheyadaniki help avthayi.
 
 2. **Oka batch job output ni oke saari DB ki and File ki ela rayali?**
    **Ans:** `CompositeItemWriter` ni vaadi, daantlo `JdbcBatchItemWriter` and `FlatFileItemWriter` ni list laaga inject chesthe, spring batch automatic ga item ni rendu writers ki sequentially pampistundi.
+
+## Enhanced List
+Official list prakaram `JpaPagingItemReader`, `HibernateCursorItemReader`, `MongoItemReader`, `KafkaItemReader` inka chala custom implementations Spring Batch natively support chesthundi. Veetini vadi manam boilerplate code thagginchachu.

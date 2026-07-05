@@ -157,3 +157,6 @@ sequenceDiagram
 
 ## Summary
 Ee chapter lo Spring Batch domain language loni major components (`Job`, `Step`, `ExecutionContext`, `JobRepository`) yokka internal implementations, package names, inka call sequences gurinchi clear ga nerchukunnnamu. Ee internal knowledge debugging time lo chala help avtundi.
+
+## 6. ExecutionContext Details
+`ExecutionContext` anedi prathi StepExecution mariyu JobExecution ki untundi. Idi oka map laaga pani chestundi (key-value pairs). Job restart ayinappudu patha state thechukodaniki idi chala mukhyam.
