@@ -1,72 +1,60 @@
 # Chapter 11 - Retry
 
 ## Introduction
-Batch processing lo konni sarlu intermittent errors vastuntayi. Ee errors ni immediate ga fail chesekante, koncham sepu aagi malli try cheste (retry) success ayye chances untayi. Network glitch leda database deadlock vachinapudu ventane job fail avvakunda undadaniki retry mechanism chala help avtundi.
+Network issues leda database deadlocks vachinappudu ah particular operation ventane fail avvakunda malli oka rendu sarlu try cheyadam chala common requirement. Spring Batch lo idi retry policies dwara chesthamu.
 
-Spring Batch 6.0 lo okappudu unna `Spring Retry` library ni theesesi, **Spring Framework 7.0 core retry feature** tho automate chesaru. Ee chapter lo Retry gurinchi simple ga discuss cheddamu.
+**Important Note (Spring Batch 6.0+):** Spring Batch v6.0 nunchi, `Spring Retry` project paina unna dependency ni theesesaru. Ipudu idi direct ga Spring Framework 7.0 loni **core retry feature** ni vaduthondi.
 
----
+## 1. RetryOperations and RetryTemplate
+Oka pani fail ayite daanni malli cheyadaniki `RetryOperations` interface vaadatharu. Deeniki default implementation `RetryTemplate`.
 
-## 1. Retry in Action
-
-Retry logic ekkuvaga external web service calls (network latency valla) leda concurrent database updates (deadlocks valla) jarigetappudu vadatharu. Example ga `DeadlockLoserDataAccessException` vaste ventane fail cheseyakunda malli attempt cheyadam best practice.
-
-### Behind the Scenes: Core Retry Feature
-*   **Version Specific Note:** *Since Spring Batch 6.0*, `spring-retry` is dropped, and `org.springframework.util.backoff.BackOff` along with Spring Framework 7.0 resilience APIs are used.
-*   **How it applies in Step:** Meeru step builder lo `.faultTolerant()` configure chesinapudu, Spring Batch lopaliki interceptors ni inject chestundi. Oka exception throw ayinapudu, adhi retryable exception aa kada ani check chestundi. Ayithe, transaction ni malli retry chestundi.
-
-```mermaid
-sequenceDiagram
-    participant StepExecution
-    participant RetryInterceptor
-    participant ItemProcessor
-    participant ItemWriter
-
-    StepExecution->>RetryInterceptor: execute chunk
-    RetryInterceptor->>ItemProcessor: process(item)
-    RetryInterceptor->>ItemWriter: write(items)
-
-    alt Throws DeadlockLoserDataAccessException
-        ItemWriter-->>RetryInterceptor: Exception!
-        RetryInterceptor->>RetryInterceptor: Check if exception is retryable and under maxRetries
-        RetryInterceptor->>ItemWriter: Retry write(items)
-    else Success
-        ItemWriter-->>StepExecution: Chunk Completed
-    end
-```
-
-### Code Example
+### API Insight
 ```java
-@Bean
-public Step step1(JobRepository jobRepository, PlatformTransactionManager transactionManager) {
-    // retry policy configuration
-    int retryLimit = 3;
-    var retryableExceptions = Set.of(DeadlockLoserDataAccessException.class);
-
-    // Core Spring Framework 7.0 RetryPolicy
-    RetryPolicy retryPolicy = RetryPolicy.builder()
-        .maxRetries(retryLimit)
-        .includes(retryableExceptions)
-        .build();
-
-    return new StepBuilder("step1", jobRepository)
-                .<String, String>chunk(2, transactionManager)
-                .reader(itemReader())
-                .writer(itemWriter())
-                .faultTolerant() // Mandatory for Retry/Skip
-                .retryPolicy(retryPolicy)
-                .build();
+public interface RetryOperations {
+    <T, E extends Throwable> T execute(RetryCallback<T, E> retryCallback) throws E;
 }
 ```
 
+**Behind the Scenes: RetryTemplate**
+- Prathi try kosam `RetryCallback` ni call chesthundi. Exception vasthe, `RetryPolicy` ni aduguthundi (malli try cheyacha ani), inka `BackOffPolicy` ni aduguthundi (entha sepu aagi try cheyali ani).
 
-## Stateful vs Stateless Retry
-- **Stateless Retry:** Typically used for external web service calls where there is no transactional boundary tied to the caller. The retry loop stays inside the current method call and just blocks until retries are exhausted.
-- **Stateful Retry:** Used when transactional resources are involved. If a database insert fails and rolls back the transaction, a simple `while` loop won't work because the transaction is dead. The framework must bubble up the exception, rollback, and re-present the original item to the step in a brand-new transaction. Spring Batch manages this state inherently when chunk-oriented processing is used.
+## 2. RetryPolicy
+RetryPolicy anedi mukhya maina rule engine. Idi `true` return cheste `RetryTemplate` malli execute chestundi.
+- **SimpleRetryPolicy**: Fixed number of attempts (e.g. 3 attempts) kosam vadataru. Specific exceptions ni mathrame retry chesela (e.g., `DeadlockLoserDataAccessException`) configure cheyochu.
+- **TimeoutRetryPolicy**: Oka limit time (timeout) tharvatha inka try cheyadu.
+- **AlwaysRetryPolicy**: Infinite ga try chesthune untundi (idi jagrathaga vadali).
 
-### Best Practices
-- **Idempotency:** Retry logic vadetappudu `ItemProcessor` and `ItemWriter` idempotent ga undali. Endukante transaction fail ayyi rollback ayyaka malli same data ni process chestunnam.
-- **Don't Retry Everything:** File parsing lanti deterministic errors (e.g. `FlatFileParseException`) ki retry panikiradu. Aa record same file lo enni sarlu chadhivina format thappugane untundi. Alanti vatiki **Skip** vadali. Retry is strictly for transient/intermittent failures.
+## 3. BackOffPolicy
+Malli try chese mundu entha sepu aagali anedi `BackOffPolicy` chuskuntundi. Ventane try cheste malli fail ayye chance untundi, anduke `Thread.sleep` laaga konchem gap ivvadam better.
+- **FixedBackOffPolicy**: Prathi attempt ki fixed time aaguthundi (e.g., 1000ms).
+- **ExponentialBackOffPolicy**: Time penchukuntu velladam (e.g., first 1 sec, tharuvatha 2 secs, aa tharuvatha 4 secs). Idi chala enterprise systems lo best practice.
+
+## 4. RetryPolicy Builder
+Spring Batch / Spring Core lo retry rules ni configure cheyadaniki Builders vadatam common.
+
+```java
+RetryTemplate template = RetryTemplate.builder()
+        .maxAttempts(3)
+        .fixedBackoff(1000) // wait for 1 second before retrying
+        .retryOn(DeadlockLoserDataAccessException.class)
+        .build();
+
+template.execute(context -> {
+    // Business logic that might fail
+    System.out.println("Trying to access DB...");
+    // throw new DeadlockLoserDataAccessException(...);
+    return null;
+});
+```
+
+## 5. Stateful vs Stateless Retry
+- **Stateless Retry:** `RetryTemplate` lopale while loop untundi. Loop jaruguthunna sepu thread block avuthundi. (Idi most common).
+- **Stateful Retry:** Asynchronous messaging vishayam lo thread ni block cheyyaleru. Exception vachinapudu ventane return aipotharu, malli message vachinapudu idhe patha attempt ani gurtu pattadaniki "state" maintain chestharu.
+
+## Best Practices
+- Non-idempotent operations ki retry pettakudadu. E.g. email send cheseppudu fail ayithe, retry chesthe 2-3 sarlu email vellachu.
+- Retry eppudu external systems integration leda concurrent DB updates ki limit cheyyali.
+- `ExponentialBackOffPolicy` eppudu better. Endukante downstream system over-load kakunda kapadtundi.
 
 ## Summary
-Retry anedi chala chinnadi kani powerful feature. Transient errors vaste job ni kapadukotaniki Spring Batch 6.0 kotha Spring Framework 7 resilience module ni vadi retry ni implement chestundi. Next chapter lo `Unit Testing` gurinchi thelusukundam.
+`RetryTemplate` anedi transient errors ni handle cheyadaniki oka super utility. Step fault tolerance lo retry enable chesinappudu Spring Batch deenne vaduthundi.

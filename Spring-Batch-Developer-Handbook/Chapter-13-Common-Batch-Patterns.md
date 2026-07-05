@@ -135,3 +135,5 @@ public void retrieveData(StepExecution stepExecution) {
 
 ## Summary
 Ee chapter lo real-world enterprise batch jobs lo vache chinna chinna samasyalaku (like passing data between steps, terminating explicitly, handling empty inputs, maintaining stateful footer callbacks) elanti established patterns Spring Batch isthundo nerchukunnnamu. Next chapter lo `Spring Batch Integration` gurinchi thelusukundam.
+## 4. Process Indicator Pattern
+Database nunchi data theskunetappudu, restart problems lekapunda undadaniki prathi row ki oka `PROCESSED` flag pettadam 'Process Indicator' pattern antaru. Idi batch jobs lo chala common and effective.

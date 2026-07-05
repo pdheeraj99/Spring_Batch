@@ -60,3 +60,7 @@ Simple sequential dependencies matrame aithe, Spring Batch loni `job-steps` mode
 
 **Answer:** Pipeline approach vaadadam valla high throughput and resilience vastundi ani practical ga prove aindi. Staged Event Driven Architecture (SEDA) pattern laaga, messaging-oriented middleware (JMS, MQ, Tibco) vaadithe out-of-the-box resilience vastundi.
 Downstream consumers and upstream stages madhya feedback unte demand ni batti consumers ni peragochu thagochu. `spring-batch-integration` project idhe pattern (Remote Chunking / Partitioning) ni implement chestundi.
+
+## Framework Integrations FAQ
+**Q: How does Spring Batch integrate with Spring Integration?**
+A: Job launching gateways, asynchronous processors, and message-driven execution are supported via the `spring-batch-integration` module, enabling robust event-driven architectures.

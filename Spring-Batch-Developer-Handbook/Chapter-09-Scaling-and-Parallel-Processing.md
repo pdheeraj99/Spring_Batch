@@ -152,3 +152,5 @@ Idi kuda Spring Batch 6.0 nunchi improve aina feature. Oka full `Step` ni as-it-
 
 ## Summary
 Ee chapter lo Spring Batch elaa millions of records ni efficiently process cheyyadaniki single-JVM inka distributed architectures istundo thelusukunnnamu. Thread safety problems nunchi escape avvadaniki Local Partitioning leda Spring Batch 6.0 loni Local Chunking excellent choices. Next chapter lo Repeat inka Completion policies gurinchi chusthamu.
+## 5. Thread Safety in Parallel Steps
+Parallel processing (e.g. Multi-threaded Step) vadetappudu prathi ItemReader, ItemWriter thread-safe ayi undali. Leda data corruption avuthundi. FlatFileItemReader by default thread safe kaadu, anduku `SynchronizedItemStreamReader` wrapper vadali.

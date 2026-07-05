@@ -115,3 +115,5 @@ V5.2 varaku `JobOperator#stop` dwara kevalam `Tasklet` steps ni matrame aapagali
 
 ## Summary
 Spring Batch 6.0 anedi configuration ni chala simplify chesindi, unnecessary beans ni tagginchindi, kotha modern concurrent execution model ni thechindi, mariyu Observability (JFR) inka null safety (JSpecify) dwara enterprise readiness ni inka penchindi. Next chapters lo manam Architecture gurinchi deeply chusthamu.
+## 4. Migration to Spring Framework 6.0 and Java 17
+Spring Batch 6.0 baseline requirement ga Java 17 inka Spring Framework 6.0 ni theesukochindi. Deenitho paatu AOT (Ahead-Of-Time) compilation and GraalVM native image support kuda vachindi. Idi microservices laaga batch jobs ni deploy cheyadaniki chala use avtundi.

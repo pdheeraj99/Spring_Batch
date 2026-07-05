@@ -124,3 +124,6 @@ Anduke, **`ItemProcessor` idempotent ga undali**.
 
 ## Summary
 `ItemProcessor` anedi chala simple ayina powerful interface. Idi data ni enrich cheyadaniki, transform cheyadaniki, inka business validations inka filters apply cheyadaniki use avtundi. Internal ga idi `SimpleChunkProcessor` dwara okkokka item paina call avtundi. Idempotency ni maintain cheyadam anedi enterprise batch processing lo oka chala pedda best practice.
+
+## 5. Chaining ItemProcessors
+Okate step lo multiple transformations cheyyalante `CompositeItemProcessor` vadatharu. Idi delegation pattern use chesi list lo unna processors anni varusaga execute chestundi. Idi separation of concerns ki best practice.

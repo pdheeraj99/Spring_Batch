@@ -59,6 +59,18 @@ public FlatFileItemReader<Player> itemReader() {
 
 ---
 
+
+
+### Exception Handling in Flat Files
+Flat files format eppudu perfect ga undadu. Thappu data unna lines valla parse exceptions vastayi. Spring Batch lo viatiki rendu exceptions untayi:
+- `FlatFileParseException`: File read chestunnapudu oche errors.
+- `FlatFileFormatException`: `LineTokenizer` daggara (e.g. incorrect tokens count leda fixed width length tapu) vachche exception.
+- `IncorrectTokenCountException`: Columns names ichina daanikante file lo unna tokens mismatch aythe (Delimited/Fixed).
+- `IncorrectLineLengthException`: Fixed length file lo define chesina widths motham kalipina length inka line length match avvakapothe (strict mode lo).
+
+`tokenizer.setStrict(false)` vaadithe FixedLengthTokenizer line length validation ni aapi, unnanta varaku map chesi, migata vi empty peduthundi.
+
+
 ## 6. Flat Files (Writing)
 
 ### FlatFileItemWriter

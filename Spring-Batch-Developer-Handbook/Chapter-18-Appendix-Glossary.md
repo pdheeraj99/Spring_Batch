@@ -76,3 +76,7 @@ Oka exception vachinappudu daanni ela handle cheyali (so that the repeat process
 
 ### Skip
 File validations lanti scenarios lo, oka chedda (bad) input record vachinappudu job fail avvakunda daanni vadilesi munduku vellipoyetanduku vaade recovery strategy ni "Skip" antaru.
+
+## Additional Terminology
+- **Chunk**: A logical list of items that is read, optionally processed, and then passed to an ItemWriter in a single transaction.
+- **Partitioning**: Splitting a large dataset into smaller bounds that multiple worker nodes can process simultaneously.
